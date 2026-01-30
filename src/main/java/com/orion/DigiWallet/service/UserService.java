@@ -28,14 +28,17 @@ public class UserService  {
 
         List<User> users = userRepository.findAll();
         logger.info("Total users fetched: {}", users.size());
-        return users;
+
         //TODO: 1.4
         // For each user in the list, call generateGreetingMsg(user)
         // before returning the list
         // Hint: Use a for-each loop to iterate through the users list
         // test the result on swagger or postman
-
-
+for(User user:users){
+    String greeting=generateGreetingMsg(user.getRole());
+    user.setUserGreetingMessage(greeting);
+}
+        return users;
     }
 
     public User getUserById(Long id) {
@@ -45,7 +48,12 @@ public class UserService  {
         // Example: logger.info("Fetching user with id {}", id);
         // Fetch user from repository
         // test the result on swagger or postman
-        return null;
+        logger.info("Fetching user with id {}", id);
+        User user=userRepository.findById(id).orElse(null);
+        if(user==null){
+            throw new RuntimeException(("User ID does not exist"));
+        }
+
 
         //TODO: 1.3
         // Before returning the User object, call generateGreetingMsg(role)
@@ -54,7 +62,9 @@ public class UserService  {
         // Then set this greeting message into the User object
         // Hint: Use user.setUserGreetingMessage(greeting)
         // test the result on swagger or postman
-
+        String greeting = generateGreetingMsg(user.getRole());
+        user.setUserGreetingMessage(greeting);
+        return user;
     }
 
     @Transactional
@@ -78,7 +88,12 @@ public class UserService  {
         // Example: "User access"
         // return the complete greeting message as a String
         // write a unit test to verify this method works as expected
-        return null;
+        if(role!=null && role.equalsIgnoreCase("ADMIN")){
+            return "HELLO Admin access ENABLED";
+        }else if(role.equalsIgnoreCase("USER")){
+            return "HELLO User access";
+        }
+        return "NO USER FOUND";
     }
 
     public User updateUserStatus(Long id) {

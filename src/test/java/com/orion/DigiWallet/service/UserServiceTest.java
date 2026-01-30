@@ -118,22 +118,25 @@ class UserServiceTest {
         // Use assertions to verify the correctness of the returned greeting messages
 
         //remove @Disabled after implementing write test actual method
-        @Disabled
+       // @Disabled
         @Test
         void shouldReturnAdminGreeting_whenRoleIsAdmin() {
-
+            String result=userService.generateGreetingMsg("ADMIN");
+            assertEquals("HELLO ADMIN ACCESS ENABLED",result);
         }
 
-        @Disabled
+       // @Disabled
         @Test
         void shouldReturnUserGreeting_whenRoleIsNotAdmin() {
-
+            String result=userService.generateGreetingMsg("USER");
+            assertEquals("HELLO USER ACCESS",result);
         }
 
-        @Disabled
+       // @Disabled
         @Test
         void shouldReturnUserGreeting_whenRoleIsNull() {
-
+            String result=userService.generateGreetingMsg("NULL");
+            assertEquals("NO USER FOUND",result);
         }
     }
 
@@ -158,11 +161,11 @@ class UserServiceTest {
         // Uncomment the below assertions after implementing greeting message logic
         //ONLY IF 1.4 IS DONE
 
-       // assertNotNull(result.get(0).getUserGreetingMessage());
-        // assertNotNull(result.get(1).getUserGreetingMessage());
+        assertNotNull(result.get(0).getUserGreetingMessage());
+         assertNotNull(result.get(1).getUserGreetingMessage());
 
-        // assertTrue(result.get(0).getUserGreetingMessage().contains("User access"));
-        // assertTrue(result.get(1).getUserGreetingMessage().contains("Admin access"));
+         assertTrue(result.get(0).getUserGreetingMessage().contains("User access"));
+         assertTrue(result.get(1).getUserGreetingMessage().contains("Admin access"));
 
         // Verify repository interaction
         verify(mockUserRepository, times(1)).findAll();
@@ -171,7 +174,7 @@ class UserServiceTest {
     //TODO: 1.9
     // implement the unit test for getUserById method in UserService
     // remove @Disabled after implementing write test actual method
-    @Disabled
+//    @Disabled
     @Test
     void getUserById_shouldReturnUserWithGreetingMessage() {
         // GIVEN

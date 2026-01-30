@@ -1,6 +1,7 @@
 package com.orion.DigiWallet.repository;
 
 import com.orion.DigiWallet.model.Card;
+import jakarta.persistence.Entity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,8 @@ import java.util.Optional;
 //TODO: 2.2
 //make this class a repository for Card entity use annotation
 //make this interface extend JpaRepository with Card as entity and Long as ID type
+
+
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
 
