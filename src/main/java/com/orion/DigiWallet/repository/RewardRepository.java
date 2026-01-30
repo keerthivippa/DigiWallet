@@ -1,4 +1,9 @@
-package com.orion.DigiWallet.model;
+package com.orion.DigiWallet.repository;
 
-public interface RewardRepository {
+import com.orion.DigiWallet.model.RewardsPoint;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface RewardRepository extends JpaRepository<RewardsPoint,Long> {
 }

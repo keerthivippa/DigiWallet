@@ -54,5 +54,10 @@ public class UserController {
     // status (ACTIVE/INACTIVE)
     // RESPONSE BODY: Updated User JSON
 
+    @PutMapping("/{id}")
+    public User updateUserStatus(@PathVariable long id){
+        return userService.updateUserStatus(id);
+    }
+
 }
 

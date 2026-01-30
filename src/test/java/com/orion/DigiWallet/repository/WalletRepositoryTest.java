@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // Q3: Why is it important to have test cases like these for repositories?
 // Q4: How does this test ensure the integrity of data operations in the application?
 // Q5: What would happen if the walletRepository.findByUserId method did not work as expected?
-@Disabled
+//@Disabled
 class WalletRepositoryTest {
 
     @Autowired

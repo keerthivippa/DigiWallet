@@ -11,11 +11,13 @@ public class CardService {
 
     //TODO: 2.1.1
     // create a private final field for CardRepository (dependency)
-
+    private final CardRepository cardRepository;
 
     //TODO: 2.1.2
     // create a constructor to inject CardRepository
-
+    public CardService(CardRepository cardRepository){
+        this.cardRepository = cardRepository;
+    }
 
     //TODO: 2.1.3
     // -----------------------------------------
@@ -29,7 +31,12 @@ public class CardService {
         // throw runtime exception if it exists "Card number already exists"
 
         // STEP 2: Save and return the card
-        return null;
+
+        if(cardRepository.existsByCardNumber(card.getCardNumber())){
+            throw new RuntimeException("Card number already exists");
+        }
+
+        return cardRepository.save(card);
     }
 
     //TODO: 2.1.4
@@ -41,7 +48,9 @@ public class CardService {
 
         // STEP 1: Fetch card by ID
         // throw runtime exception if not found "Card not found with id: " + id
-        return null;
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Card not found with id: "+id));
+        return card;
     }
 
     //TODO: 2.1.5
@@ -54,13 +63,24 @@ public class CardService {
         // STEP 1: Fetch existing card
         // throw runtime exception if not found "Card not found with id: " + id
        ;
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Card not found with id: "+id));
+
 
         // STEP 2: Update allowed fields
         // For simplicity, assume all fields except id and cardNumber can be updated
         // from updatedCard object get the values and set them to existingCard which you fetched in STEP 1
-
+//        if ("ACTIVE".equalsIgnoreCase(card.getStatus())) {
+//            card.setStatus("INACTIVE");
+//        } else {
+//            card.setStatus("ACTIVE");
+//        }
+        card.setStatus(updatedCard.getStatus());
+        card.setExpiryDate(updatedCard.getExpiryDate());
+        card.setCardType(updatedCard.getCardType());
+        card.setIssuedAt(updatedCard.getIssuedAt());
         // STEP 3: Save updated card
-        return null;
+        return cardRepository.save(card);
     }
 
     //TODO: 2.1.6
@@ -72,8 +92,14 @@ public class CardService {
 
         // STEP 1: Check if card exists
         // throw runtime exception if not found "Card not found with id: " + id
+        if (cardRepository.existsById(id))
+        {
+            cardRepository.deleteById(id);
+        }
+        else{
+            throw new RuntimeException("Card not found with id: "+id);
+        };
 
         // STEP 2: Delete card
-
     }
 }

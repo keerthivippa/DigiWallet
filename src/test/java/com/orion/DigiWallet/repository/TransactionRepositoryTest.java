@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // ALSO LOOK AT THE DBSCIPT.SQL AND DATAINSERT.SQL FILES IN MAIN FOLDER
 //RUN THE SHELL SCRIPT TO CREATE THE TABLES IN TEST DATABASE BEFORE RUNNING THE TESTS
 //TODO: 3.6.1: REMOVE @Disabled TO ENABLE THE TESTS
-@Disabled
+//@Disabled
 public class TransactionRepositoryTest {
 
     @Autowired
@@ -45,32 +46,33 @@ public class TransactionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        // GIVEN
         // Create and persist User
-        //TODO: 3.6.2: SET OTHER MANDATORY FIELDS IF ANY IN USER ENTITY
-        // create user with dummy data eg username, email etc
-        // username: "Test User", email: "txn.user@test.com
-        // Save the user to the repository and assign to this.user
-
+        User user = new User();
+        user.setUsername("Test User");
+        user.setEmail("txn.user@test.com");
+        this.user = userRepository.save(user);
 
         // Create and persist Wallet linked to User
-        //TODO: 3.6.3: Create wallet with dummy data eg balance, currency, status etc
-        // balance: 1000, currency: "INR", status: "ACTIVE"
-        // Link the wallet to the user created above
-        // Balance is BigDecimal.valueOf(1000)
-        // Save the wallet to the repository and assign to this.wallet
+        Wallet wallet = new Wallet();
+        wallet.setUser(this.user);
+        wallet.setBalance(BigDecimal.valueOf(1000)); // balance: 1000
+        wallet.setCurrency("INR");                   // currency: INR
+        wallet.setStatus("ACTIVE");                  // status: ACTIVE
+        this.wallet = walletRepository.save(wallet);
 
         // Create and persist Category
-        //TODO: 3.6.4: Create category with type "EXPENSE"
-        // Save the category to the repository and assign to this.category
-
+        Category category = new Category();
+        category.setType("EXPENSE");                 // type: EXPENSE
+        category.setName("Movie");                   // example category name
+        this.category = categoryRepository.save(category);
     }
+
 
     //TODO: 3.6.5: READ ONLY
     // Write a test to verify:
     // - Transaction can be saved successfully
     // - Transaction ID is generated
-    @Disabled
+//    @Disabled
     @Test
     void shouldSaveTransactionSuccessfully() {
         // GIVEN
@@ -95,27 +97,48 @@ public class TransactionRepositoryTest {
     @Test
     void shouldFindTransactionsByUserId() {
         // GIVEN
-        // Create and save multiple Transactions for the Wallet
+        Transaction txn1 = new Transaction();
+        txn1.setWallet(wallet);
+        txn1.setCategory(category);
+        txn1.setAmount(250.0);
+        txn1.setTransactionType("DEBIT");
+        txn1.setReferenceId("TXN-USER-001");
 
+        Transaction txn2 = new Transaction();
+        txn2.setWallet(wallet);
+        txn2.setCategory(category);
+        txn2.setAmount(500.0);
+        txn2.setTransactionType("DEBIT");
+        txn2.setReferenceId("TXN-USER-002");
+
+        transactionRepository.save(txn1);
+        transactionRepository.save(txn2);
 
         // WHEN
-
+        List<Transaction> transactions = transactionRepository.findByWallet_User_Id(user.getId());
 
         // THEN
-
+        assertThat(transactions).isNotEmpty();
+        assertThat(transactions).hasSize(2);
+        assertThat(transactions)
+                .extracting(Transaction::getReferenceId)
+                .containsExactlyInAnyOrder("TXN-USER-001", "TXN-USER-002");
     }
 
     // TODO: 3.6.7
     // Write a test to verify:
     // - Empty list is returned when no transactions exist for user
-    @Disabled
+//    @Disabled
     @Test
     void shouldReturnEmptyListWhenNoTransactionsForUser() {
         // GIVEN
+        // No transactions are created or saved for this user
 
         // WHEN
+        List<Transaction> transactions = transactionRepository.findByWallet_User_Id(user.getId());
 
         // THEN
-
+        assertThat(transactions).isEmpty();
     }
+
 }

@@ -30,7 +30,7 @@ class CardServiceTest {
 
     // ---------------------------------------------------------
     // REMOVE @Disabled TO ENABLE THE TESTS
-    @Disabled
+//    @Disabled
     @Nested
     @DisplayName("createCard()")
     class CreateCardTests {
@@ -79,7 +79,7 @@ class CardServiceTest {
 
     // ---------------------------------------------------------
     // REMOVE @Disabled TO ENABLE THE TESTS
-    @Disabled
+//    @Disabled
     @Nested
     @DisplayName("getCardById()")
     class GetCardByIdTests {
@@ -120,7 +120,7 @@ class CardServiceTest {
 
     // ---------------------------------------------------------
     // REMOVE @Disabled TO ENABLE THE TESTS
-    @Disabled
+//    @Disabled
     @Nested
     @DisplayName("updateCard()")
     class UpdateCardTests {
@@ -170,7 +170,7 @@ class CardServiceTest {
 
     // ---------------------------------------------------------
     // REMOVE @Disabled TO ENABLE THE TESTS
-    @Disabled
+//    @Disabled
     @Nested
     @DisplayName("deleteCard()")
     class DeleteCardTests {
